@@ -71,21 +71,30 @@ def arrow(slide, x1, y1, x2, y2):
     ln.append(tail)
 
 
-def set_text(shape, value, size=None):
+def set_text(shape, value, size=None, color=None):
     tf = shape.text_frame
+    tf.word_wrap = True
+    lines = value.split("\n")
+    # reuse the first paragraph, drop the rest, then add one paragraph per line
     first = tf.paragraphs[0]
-    runs = first.runs
-    if runs:
-        runs[0].text = value
-        for r in runs[1:]:
-            r.text = ""
+    for p in list(tf.paragraphs)[1:]:
+        p._p.getparent().remove(p._p)
+    for i, line in enumerate(lines):
+        p = first if i == 0 else tf.add_paragraph()
+        if p.runs:
+            p.runs[0].text = line
+            for r in p.runs[1:]:
+                r.text = ""
+            run = p.runs[0]
+        else:
+            run = p.add_run()
+            run.text = line
         if size:
-            runs[0].font.size = Pt(size)
-    else:
-        first.add_run().text = value
-    for p in tf.paragraphs[1:]:
-        for r in p.runs:
-            r.text = ""
+            run.font.size = Pt(size)
+        if color:
+            run.font.color.rgb = color
+        p.space_before = Pt(0)
+        p.space_after = Pt(0)
 
 
 def main(template, repo):
@@ -104,13 +113,16 @@ def main(template, repo):
         t = sh.text_frame.text
         if t.startswith("Track No"):
             set_text(sh, "Track 01")
-        elif t.startswith("XR Hackathon") or t.startswith("Photoreal"):
-            set_text(sh, "Synthetic Gaze\non the GNM Head", 32)
-        elif t.startswith("Team Name"):
-            set_text(sh, f"{TEAM}\n{COLLEGE}", 16)
+        elif "Hackathon" in t or t.startswith("Synthetic Gaze"):
+            set_text(sh, "Synthetic Gaze\non the GNM Head", 32, WHITE)
+        elif t.startswith("Team Name") or t.startswith(TEAM):
+            sh.top = Emu(2520000)
+            sh.height = Emu(700000)
+            set_text(sh, f"{TEAM}\n{COLLEGE}", 16, WHITE)
         elif t.startswith("Members"):
-            set_text(sh, "Members: Visshva R (solo)", 12)
-    text(s[0], 502920, 3600000, 7800000, 900000,
+            sh.top = Emu(2520000)
+            set_text(sh, "Visshva R (solo)", 16, WHITE)
+    text(s[0], 502920, 3600000, 7800000, 700000,
          ["Track 01  |  Synthetic Eye Movement & Virtual Camera Rendering", repo], 16)
 
     # 2 - problem
@@ -122,7 +134,7 @@ def main(template, repo):
         "- Every frame needs ground truth: rotations, 2D/3D pupil centres and the camera matrix.",
         "Goal: a scriptable Blender generator with Left / Right / Generate-Motion inputs that produces natural, human-like eye and eyelid motion with photoreal textures.",
     ], 12)
-    image(s[1], R("renders", "textures", "variant_04_olive_eyes.png"), 5800000, TOP + 100000, h=3900000)
+    image(s[1], R("renders", "textures", "variant_04_olive_eyes.png"), 5750000, 1050000, h=3850000)
 
     # 3 - solution
     text(s[2], 365760, TOP, 5000000, 4100000, [
@@ -133,7 +145,7 @@ def main(template, repo):
         "- Human oculomotor model: main-sequence saccades, pursuit eye-roll, drift, blinks, Bell's phenomenon.",
         "- eyes.move(h,v) / reset() / blink() / expression() / render(). The CLI renders the Left / Right / Motion videos plus metadata.",
     ], 12)
-    image(s[2], R("renders", "textures", "variant_03_medium_warm.png"), 5500000, TOP, h=4000000)
+    image(s[2], R("renders", "textures", "variant_03_medium_warm.png"), 5450000, 1050000, h=3850000)
 
     # 4 - architecture
     y0 = TOP + 150000
@@ -163,19 +175,16 @@ def main(template, repo):
     for sh in s[4].shapes:
         if sh.has_text_frame and "Track Final" in sh.text_frame.text:
             set_text(sh, "TRACK FINAL OUTPUT")
-    text(s[4], 365760, TOP - 60000, 8400000, 300000,
-         ["10 clockwise renders (theta_k = 2*pi*k/10), 8 UV texture variants, 3 videos (<= 15 s), metadata.json"], 11)
-    image(s[4], R("renders", "contact_sheet.png"), 365760, TOP + 280000, w=5000000)
-    vs = ["variant_01_fair_freckled", "variant_02_light_rosy", "variant_05_south_asian_tan", "variant_06_brown",
-          "variant_07_dark", "variant_08_gray_eyed_fair"]
+    text(s[4], 365760, 900000, 8600000, 280000,
+         ["10 clockwise renders, 8 UV texture variants, 3 videos (each under 15 s), metadata.json"], 14)
+    image(s[4], R("renders", "contact_sheet.png"), 280000, 1250000, w=5000000)
+    vs = ["variant_01_fair_freckled", "variant_05_south_asian_tan", "variant_06_brown", "variant_07_dark"]
     for i, v in enumerate(vs):
-        r, c = divmod(i, 3)
-        image(s[4], R("renders", "textures", f"{v}.png"), 5500000 + c * 1080000, TOP + 280000 + r * 1080000, w=1060000)
-    image(s[4], R("renders", "textures", "variant_02_light_rosy_eyes.png"), 365760 + 5000000 + 140000, TOP + 2500000, w=1550000)
-    image(s[4], R("renders", "textures", "variant_05_south_asian_tan_34.png"), 365760 + 5000000 + 1750000, TOP + 2500000, w=1550000)
+        r, c = divmod(i, 2)
+        image(s[4], R("renders", "textures", f"{v}.png"), 5450000 + c * 1750000, 1250000 + r * 1750000, w=1680000)
     if checks:
         rows = [f"{k.capitalize()}: {'PASS' if v.get('pass') else 'FAIL'}" for k, v in checks.items() if isinstance(v, dict)]
-        text(s[4], 365760, TOP + 2400000, 5000000, 1400000,
+        text(s[4], 280000, 4000000, 5000000, 1000000,
              ["Automated 5-direction check (pupil shift in pixels vs reset):", "  ".join(rows),
               "Videos: outputs/videos/left.mp4 (7 s), right.mp4 (7 s), motion.mp4 (12 s)",
               "Timeline: scene.blend plays the Generate Motion expression (frames 1-360)"], 11)
@@ -214,15 +223,15 @@ def main(template, repo):
         "- Fine eyelash shader with sparser lower lashes.",
         "- Three render cameras: locked 40 cm front, eye close-up, three-quarter (shows seam-free UVs).",
     ], 12)
-    image(s[7], R("renders", "textures", "variant_01_fair_freckled_eyes.png"), 4800000, TOP, w=2000000)
-    image(s[7], R("renders", "textures", "variant_06_brown_eyes.png"), 6900000, TOP, w=2000000)
-    image(s[7], R("renders", "textures", "variant_04_olive_34.png"), 4800000, TOP + 2050000, w=2000000)
-    image(s[7], R("renders", "textures", "variant_07_dark_34.png"), 6900000, TOP + 2050000, w=2000000)
+    image(s[7], R("renders", "textures", "variant_01_fair_freckled_eyes.png"), 4700000, 1000000, w=2050000)
+    image(s[7], R("renders", "textures", "variant_06_brown_eyes.png"), 6850000, 1000000, w=2050000)
+    image(s[7], R("renders", "textures", "variant_04_olive_34.png"), 4700000, 3100000, w=2050000)
+    image(s[7], R("renders", "textures", "variant_07_dark_34.png"), 6850000, 3100000, w=2050000)
 
     # 9 - thank you
     for sh in s[8].shapes:
-        if sh.has_text_frame and sh.name == "Text 25":
-            set_text(sh, f"{TEAM} | {COLLEGE} | {repo}", 10)
+        if sh.has_text_frame and sh.name.startswith("Text") and sh.top > Emu(4000000):
+            set_text(sh, f"{TEAM}   ·   {COLLEGE}", 14, WHITE)
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     prs.save(OUT)
