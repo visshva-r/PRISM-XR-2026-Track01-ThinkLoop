@@ -1,0 +1,3 @@
+# Texture synthesis (code/texture_synth.py) runs on plain Python + numpy.
+# Scene build and rendering run inside Blender 4.2+ (bundled Python already includes numpy).
+numpy>=1.24

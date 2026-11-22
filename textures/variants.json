@@ -1,0 +1,55 @@
+{
+  "uv_layout": "ICT-FaceKit GNM (face tile u0-1, head tile u1-2, eye tiles u0-1)",
+  "variants": [
+    {
+      "id": 1,
+      "name": "fair_freckled",
+      "iris": "blue",
+      "dir": "textures/variant_01"
+    },
+    {
+      "id": 2,
+      "name": "light_rosy",
+      "iris": "green",
+      "dir": "textures/variant_02"
+    },
+    {
+      "id": 3,
+      "name": "medium_warm",
+      "iris": "hazel",
+      "dir": "textures/variant_03"
+    },
+    {
+      "id": 4,
+      "name": "olive",
+      "iris": "brown",
+      "dir": "textures/variant_04"
+    },
+    {
+      "id": 5,
+      "name": "south_asian_tan",
+      "iris": "dark_brown",
+      "dir": "textures/variant_05"
+    },
+    {
+      "id": 6,
+      "name": "brown",
+      "iris": "dark_brown",
+      "dir": "textures/variant_06"
+    },
+    {
+      "id": 7,
+      "name": "dark",
+      "iris": "very_dark",
+      "dir": "textures/variant_07"
+    },
+    {
+      "id": 8,
+      "name": "gray_eyed_fair",
+      "iris": "gray",
+      "dir": "textures/variant_08"
+    }
+  ],
+  "iris_deg": 24.0,
+  "pupil_deg": 8.5
+}

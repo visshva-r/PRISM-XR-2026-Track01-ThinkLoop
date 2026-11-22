@@ -1,0 +1,107 @@
+{
+  "left": {
+    "input": [
+      -1,
+      0
+    ],
+    "pupil_dx_px": [
+      -24.78,
+      -27.0
+    ],
+    "pupil_dy_px": [
+      0.0,
+      0.0
+    ],
+    "rotation_L_deg": [
+      0.0,
+      -0.0,
+      -33.444
+    ],
+    "rotation_R_deg": [
+      0.0,
+      -0.0,
+      -25.752
+    ],
+    "pass": true
+  },
+  "right": {
+    "input": [
+      1,
+      0
+    ],
+    "pupil_dx_px": [
+      27.0,
+      24.78
+    ],
+    "pupil_dy_px": [
+      0.0,
+      0.0
+    ],
+    "rotation_L_deg": [
+      0.0,
+      -0.0,
+      25.752
+    ],
+    "rotation_R_deg": [
+      0.0,
+      -0.0,
+      33.444
+    ],
+    "pass": true
+  },
+  "up": {
+    "input": [
+      0,
+      1
+    ],
+    "pupil_dx_px": [
+      0.05,
+      -0.05
+    ],
+    "pupil_dy_px": [
+      -20.56,
+      -20.56
+    ],
+    "rotation_L_deg": [
+      -23.12,
+      -0.958,
+      -4.679
+    ],
+    "rotation_R_deg": [
+      -23.12,
+      0.958,
+      4.679
+    ],
+    "pass": true
+  },
+  "down": {
+    "input": [
+      0,
+      -1
+    ],
+    "pupil_dx_px": [
+      0.05,
+      -0.05
+    ],
+    "pupil_dy_px": [
+      20.56,
+      20.56
+    ],
+    "rotation_L_deg": [
+      23.12,
+      0.958,
+      -4.679
+    ],
+    "rotation_R_deg": [
+      23.12,
+      -0.958,
+      4.679
+    ],
+    "pass": true
+  },
+  "reset": {
+    "max_residual_px": 0.0,
+    "pass": true
+  },
+  "all_pass": true
+}
