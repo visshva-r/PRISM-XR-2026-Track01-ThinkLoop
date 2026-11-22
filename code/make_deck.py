@@ -18,11 +18,12 @@ OUT = os.path.join(ROOT, "docs", f"{COLLEGE}_{TEAM}.pptx")
 TOP = 900000
 W = 9144000
 H = 5143500
-DARK = RGBColor(0x1F, 0x23, 0x2B)
+WHITE = RGBColor(0xF4, 0xF7, 0xFB)
+INK = RGBColor(0x1F, 0x23, 0x2B)
 ACCENT = RGBColor(0x14, 0x28, 0xA0)
 
 
-def text(slide, x, y, w, h, lines, size=12, bold_first=False, color=DARK):
+def text(slide, x, y, w, h, lines, size=14, bold_first=False, color=WHITE):
     tb = slide.shapes.add_textbox(Emu(x), Emu(y), Emu(w), Emu(h))
     tf = tb.text_frame
     tf.word_wrap = True
@@ -57,7 +58,7 @@ def box(slide, x, y, w, h, label, fill=RGBColor(0xE8, 0xED, 0xFA)):
         r.text = line
         r.font.size = Pt(9 if i else 10)
         r.font.bold = i == 0
-        r.font.color.rgb = DARK
+        r.font.color.rgb = INK
     return s
 
 
@@ -103,14 +104,14 @@ def main(template, repo):
         t = sh.text_frame.text
         if t.startswith("Track No"):
             set_text(sh, "Track 01")
-        elif t.startswith("XR Hackathon"):
-            set_text(sh, "Photoreal Synthetic Gaze on the GNM Head", 30)
+        elif t.startswith("XR Hackathon") or t.startswith("Photoreal"):
+            set_text(sh, "Synthetic Gaze\non the GNM Head", 32)
         elif t.startswith("Team Name"):
-            set_text(sh, f"Team: {TEAM}  |  {COLLEGE}", 14)
+            set_text(sh, f"{TEAM}\n{COLLEGE}", 16)
         elif t.startswith("Members"):
             set_text(sh, "Members: Visshva R (solo)", 12)
-    text(s[0], 502920, 3300000, 6000000, 900000,
-         ["Synthetic Eye Movement & Virtual Camera Rendering", repo], 12)
+    text(s[0], 502920, 3600000, 7800000, 900000,
+         ["Track 01  |  Synthetic Eye Movement & Virtual Camera Rendering", repo], 16)
 
     # 2 - problem
     text(s[1], 365760, TOP, 5300000, 4000000, [
@@ -159,6 +160,9 @@ def main(template, repo):
     ], 10)
 
     # 5 - final output
+    for sh in s[4].shapes:
+        if sh.has_text_frame and "Track Final" in sh.text_frame.text:
+            set_text(sh, "TRACK FINAL OUTPUT")
     text(s[4], 365760, TOP - 60000, 8400000, 300000,
          ["10 clockwise renders (theta_k = 2*pi*k/10), 8 UV texture variants, 3 videos (<= 15 s), metadata.json"], 11)
     image(s[4], R("renders", "contact_sheet.png"), 365760, TOP + 280000, w=5000000)
