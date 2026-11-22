@@ -126,7 +126,7 @@ def main(template, repo):
          ["Track 01  |  Synthetic Eye Movement & Virtual Camera Rendering", repo], 16)
 
     # 2 - problem
-    text(s[1], 365760, TOP, 5300000, 4000000, [
+    text(s[1], 365760, TOP, 4900000, 3900000, [
         "XR gaze estimators need huge, exactly-labelled eye datasets.",
         "- Real capture across extreme gaze angles is slow, costly and privacy-restricted.",
         "- Simple 2D pupil sliding looks fake: real eyes rotate as spheres about their centres, converge on a target, and drag the eyelids and brows with them.",
@@ -134,10 +134,10 @@ def main(template, repo):
         "- Every frame needs ground truth: rotations, 2D/3D pupil centres and the camera matrix.",
         "Goal: a scriptable Blender generator with Left / Right / Generate-Motion inputs that produces natural, human-like eye and eyelid motion with photoreal textures.",
     ], 12)
-    image(s[1], R("renders", "textures", "variant_04_olive_eyes.png"), 5750000, 1050000, h=3850000)
+    image(s[1], R("renders", "textures", "variant_04_olive_eyes.png"), 5450000, 1200000, w=3400000)
 
     # 3 - solution
-    text(s[2], 365760, TOP, 5000000, 4100000, [
+    text(s[2], 365760, TOP, 4900000, 3900000, [
         "GNM (ICT-FaceKit) head, fully driven from Python:",
         "- Eye bones at sphere-fitted eyeball centres. Both Damped-Track one fixation target 35 cm ahead, giving true spherical rotation plus vergence.",
         "- 24 GNM blendshapes for blink, lid-gaze coupling, squint, wide, brows, cheeks and smile, plus 5 identity shapes.",
@@ -145,7 +145,7 @@ def main(template, repo):
         "- Human oculomotor model: main-sequence saccades, pursuit eye-roll, drift, blinks, Bell's phenomenon.",
         "- eyes.move(h,v) / reset() / blink() / expression() / render(). The CLI renders the Left / Right / Motion videos plus metadata.",
     ], 12)
-    image(s[2], R("renders", "textures", "variant_03_medium_warm.png"), 5450000, 1050000, h=3850000)
+    image(s[2], R("renders", "textures", "variant_03_medium_warm.png"), 5450000, 1200000, w=3400000)
 
     # 4 - architecture
     y0 = TOP + 150000
